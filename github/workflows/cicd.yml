@@ -15,7 +15,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20   # ✅ match your local version
+          node-version: 20   
 
       - name: Install dependencies
         run: npm install
@@ -27,10 +27,10 @@ jobs:
           curl http://localhost:4000/health   
 
       - name: Build Docker image
-        run: docker build -t node-ci-cd-app .
+        run: docker build -t ca2cicd .
 
       - name: Run Docker container
         run: |
-          docker run -d -p 4000:4000 node-ci-cd-app   
+          docker run -d -p 4000:4000 ca2cicd   
           sleep 5
           curl http://localhost:4000/health
