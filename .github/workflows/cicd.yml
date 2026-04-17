@@ -15,22 +15,26 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 20   
+          node-version: 20
 
       - name: Install dependencies
         run: npm install
 
+      # 🔹 Run app locally and test
       - name: Run app test (basic)
         run: |
           node index.js &
           sleep 5
-          curl http://localhost:4000/health   
+          curl --fail http://localhost:4000/health
+          pkill node   # ✅ kill process to free port
 
+      # 🔹 Build Docker image
       - name: Build Docker image
         run: docker build -t ca2cicd .
 
+      # 🔹 Run Docker container and test
       - name: Run Docker container
         run: |
-          docker run -d -p 4000:4000 ca2cicd   
+          docker run -d -p 4000:4000 ca2cicd
           sleep 5
-          curl http://localhost:4000/health
+          curl --fail http://localhost:4000/health
